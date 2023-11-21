@@ -1,33 +1,112 @@
-<html>
-    <body>
-        <h1 style="color: green; font-size: 60px; font-style: normal;">Registration Form</h1>
-        <form id="user-form">
-            <label for="name">Name</label>
-            <input required type="name" id="name" name="name" placeholder="Enter name">
-    
-            <label for="email">Email</label>
-            <input required type="email" id="email" name="email" placeholder="email">
-    
-            <lable for="password">PassWord</lable>
-            <input required type="password" id="password" name="password" placeholder="password">
-    
-            <lable for="dob">Date of Birth</lable>
-            <input required type="date" id="dob" name="dob">
-   
-            <lable for="acceptTerms">Accept Terms& Conditions</lable>
-            <input required type="checkbox" id="acceptTerms" name="acceptTerms">
-    
-            <button type="submit">Submit</button>
-        </form>
-        <div class="mx-auto">
-            <h2 class="text-3xl text-center font-bold leading-tight">Entries</h2>
-            <div class="divide-y divide-gray-300/50" id="user-entries">
-
-            </div>
-
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .form_container {
+            width: 420px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #ec5151;
+            border-radius: 6px;
+        }
+        .table_container {
+            width: 750px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         
-    </body>
-    <script src="./index.js"></script>
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="checkbox"] {
+            width: 90%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #008000;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #output {
+            margin-top: 20px;
+        }
 
+        table {
+        width: 100%;
+
+        }
+
+        
+        th {   
+            padding: 8px;
+            text-align: left;
+            }
+
+        td {
+        padding: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form_container">
+    
+    <h2><center>Google Form</h2></center>
+        <table>
+        <form id="registrationForm" >
+            <tr><td><label for="name">Name<font color=green>*</font></label></td>
+            <td><input type="text" id="name" name="name" requigreen placeholder="Enter Name"></td></tr>
+
+           <tr><td> <label for="email">Email<font color=green>*</font></label></td>
+           <td> <input type="email" id="email" name="email" requigreen  placeholder="Enter email" ></td></tr>
+
+            <tr><td><label for="password">Password<font color=green>*</font></label></td>
+            <td><input type="password" id="password" name="password"requigreen placeholder="Enter password"></td></tr>
+
+            <tr><td><label for="dob">Date of Birth<font color=green>*</font></label></td>
+            <td><input  type="date" id="dob" name="dob"  onchange="restrict()" requigreen placeholder="dob" class="form-control date-input"></td></tr>
+            <tr><td>
+                <input type="checkbox" id="terms" name="terms" requigreen></td>
+                <td><label>I accept the terms and conditions.
+            </label></td></tr>
+<tr><td colspan="2">
+            <button type="submit" >Submit</button></td></tr></table>
+        </form>
+    </div>
+<div class="table_container" id="output">
+        <h2><center>Entries</center></h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>email</th>
+                    <th>Password</th>
+                    <th>date of birth</th>
+                    <th>Accepted terms</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+        </table>
+    </div>
+
+    <script src="index.js">
+        
+     
+    </script>
+</body>
 </html>
