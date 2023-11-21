@@ -1,93 +1,97 @@
-let userForm = document.getElementById("user-form");
 
-const validateAge = (dob) => {
-    const currentDate = new Date();
-    const inputDate = new Date(dob);
-    const age = currentDate.getFullYear() - inputDate.getFullYear();
-    return age >= 18 && age <= 55;
-};
-
-const retrieveEntries = () => {
-    let entries = localStorage.getItem("user-entries");
-    if (entries) {
-      entries = JSON.parse(entries);
-    } else {
-      entries = [];
-    }
-    return entries;
-}
-
-let userEntries= retrieveEntries();
-
-const displayEntries=()=>{
-    const entries=retrieveEntries();
-    /*
-    <table>
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        ...
-    </tr>
-    <tr>
-        <td>John Doe</td>
-        <td>john@doe.com</td>
-        ...
-    </tr>
-    </table>
-     */
-
-
-    const tableEntries = entries.map((entry) => {
-        const nameCell = `<td class='border px-4 py-2'>${entry.name}</td>`;
-        const emailCell = `<td class='border px-4 py-2'>${entry.email}</td>`;
-        const passwordCell = `<td class='border px-4 py-2'>${entry.password}</td>`;
-        const dobCell = `<td class='border px-4 py-2'>${entry.dob}</td>`;
-        const acceptTermsCell = `<td class='border px-4 py-2'>${entry.acceptTermsAndConditions}</td>`;
-        const row = `<tr>${nameCell} ${emailCell} ${passwordCell} ${dobCell} ${acceptTermsCell}</tr>`;
-        return row;
-    }).join("\n");
-          
-    const table = `<table class="table-auto w-full"><tr>
-          
-    <th class="px-4 py-2">Name     </th>
-    <th class="px-4 py-2">Email    </th>
-    <th class="px-4 py-2">Password   </th>
-    <th class="px-4 py-2">dob    </th>
-    <th class="px-4 py-2">accepted terms?    </th>
-</tr>${tableEntries} </table>`;
-let details = document.getElementById("user-entries");
-details.innerHTML = table;
-};
-
-const saveUserForm = (event) => {
-    event.preventDefault();
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const dob = document.getElementById("dob").value;
-
-    // Additional validation for age
-    if (!validateAge(dob)) {
-        alert("Age must be between 18 and 55.");
-        return;
-    }
+function formatDate(inputDate) {
     
 
+    const parts = inputDate.split('/');
+    if (parts.length !== 3) {
+        return 'Invalid date format';
+    }
 
-    const acceptTermsAndConditions = document.getElementById("acceptTerms").checked;
-    const entry = {
-        name,
-        email,
-        password,
-        dob,
-        acceptTermsAndConditions
-    };
+    const day = parseInt(parts[1], 10);
+    const month = parseInt(parts[0], 10) - 1;
+    const year = parseInt(parts[2], 10);
 
-    userEntries.push(entry);
-    localStorage.setItem("user-enties",JSON.stringify(userEntries));
-    displayEntries();
+
+    const date = new Date(year, month, day);
+
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    return formattedDate;
 }
-userForm.addEventListener("submit",saveUserForm);
-displayEntries();
-  
-  
+
+function restrict() {
+
+    var dateInput = document.getElementById("dob");
+    var selectedDate = new Date(dateInput.value);
+
+    var maxD = new Date(dateInput.max); 
+    var minD = new Date(dateInput.min); 
+
+    if (selectedDate < minD) {
+        document.getElementById('dob').textContent = "Age should be lessthan" + maxformattedDate;
+    } else if (selectedDate > maxD) {
+        document.getElementById('dob').textContent = "Age should be lessthan" + minformattedDate;
+    }
+}
+
+function initialState() {
+    var dateInput = document.getElementById("dob");
+    var today = new Date();
+    var maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+    var minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
+    const inputMaxDate = maxDate.toLocaleDateString();
+    const inputMinDate = minDate.toLocaleDateString();
+    const maxformattedDate = formatDate(inputMaxDate);
+    const minformattedDate = formatDate(inputMinDate);
+    var maxD = new Date(maxformattedDate); // Replace with your minimum date
+    var minD = new Date(minformattedDate); // Replace with your maximum date
+    dateInput.setAttribute("min", minD.toISOString().split('T')[0]);
+    dateInput.setAttribute("max", maxD.toISOString().split('T')[0]);
+}
+
+
+ window.onload = initialState
+
+document.addEventListener("DOMContentLoaded", function () {
+    const registrationForm = document.getElementById("registrationForm");
+    const userTableBody = document.getElementById("userTableBody");
+
+    
+    loadUserEntries();
+
+    registrationForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const pwd = document.getElementById("password").value;
+        const terms = document.getElementById("terms").checked;
+        const dob = document.getElementById("dob").value;
+
+        const newRow = userTableBody.insertRow();
+        newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${pwd}</td><td>${dob}</td><td>${terms}</td>`;
+        clearFormFields();
+
+    
+        saveUserEntry(name, email, pwd, dob, terms);
+
+    });
+
+    function clearFormFields() {
+        registrationForm.reset();
+    }
+
+    function loadUserEntries() {
+        const userEntries = JSON.parse(localStorage.getItem("userEntries")) || [];
+        userEntries.forEach(({ name, email, pwd, dob, terms }) => {
+            const newRow = userTableBody.insertRow();
+            newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${pwd}</td><td>${dob}</td><td>${terms}</td>`;
+        });
+    }
+
+    function saveUserEntry(name, email, pwd, dob, terms) {
+        const userEntries = JSON.parse(localStorage.getItem("userEntries")) || [];
+        userEntries.push({ name, email, pwd, dob, terms });
+        localStorage.setItem("userEntries", JSON.stringify(userEntries));
+    }
+});
