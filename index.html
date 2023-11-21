@@ -1,0 +1,33 @@
+<html>
+    <body>
+        <h1 style="color: green; font-size: 60px; font-style: normal;">Registration Form</h1>
+        <form id="user-form">
+            <label for="name">Name</label>
+            <input required type="name" id="name" name="name" placeholder="Enter name">
+    
+            <label for="email">Email</label>
+            <input required type="email" id="email" name="email" placeholder="email">
+    
+            <lable for="password">PassWord</lable>
+            <input required type="password" id="password" name="password" placeholder="password">
+    
+            <lable for="dob">Date of Birth</lable>
+            <input required type="date" id="dob" name="dob">
+   
+            <lable for="acceptTerms">Accept Terms& Conditions</lable>
+            <input required type="checkbox" id="acceptTerms" name="acceptTerms">
+    
+            <button type="submit">Submit</button>
+        </form>
+        <div class="mx-auto">
+            <h2 class="text-3xl text-center font-bold leading-tight">Entries</h2>
+            <div class="divide-y divide-gray-300/50" id="user-entries">
+
+            </div>
+
+        </div>
+        
+    </body>
+    <script src="./index.js"></script>
+
+</html>
